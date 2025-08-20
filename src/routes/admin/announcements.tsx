@@ -87,7 +87,7 @@ const createAnnouncement = async (data: CreateAnnouncementData): Promise<Announc
 
 const updateAnnouncement = async (id: string, data: UpdateAnnouncementData): Promise<Announcement> => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`/api/v1/admin/announcements/${id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/admin/announcements/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const updateAnnouncement = async (id: string, data: UpdateAnnouncementData): Pro
 
 const deleteAnnouncement = async (id: string): Promise<void> => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`/api/v1/admin/announcements/${id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/admin/announcements/${id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`,

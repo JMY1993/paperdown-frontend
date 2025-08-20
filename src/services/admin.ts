@@ -33,38 +33,38 @@ interface UpdateUserRequest {
 
 // API Functions
 async function fetchUsers(page: number, limit: number): Promise<UsersResponse> {
-  const { data } = await axios.get('/api/v1/admin/users', {
+  const { data } = await axios.get('/admin/users', {
     params: { page, limit }
   })
   return data
 }
 
 async function fetchUser(userId: string): Promise<User> {
-  const { data } = await axios.get(`/api/v1/admin/users/${userId}`)
+  const { data } = await axios.get(`/admin/users/${userId}`)
   return data
 }
 
 async function createUser(userData: CreateUserRequest): Promise<User> {
-  const { data } = await axios.post('/api/v1/admin/users', userData)
+  const { data } = await axios.post('/admin/users', userData)
   return data
 }
 
 async function updateUser(userId: string, updates: UpdateUserRequest): Promise<User> {
-  const { data } = await axios.patch(`/api/v1/admin/users/${userId}`, updates)
+  const { data } = await axios.patch(`/admin/users/${userId}`, updates)
   return data
 }
 
 async function deleteUser(userId: string): Promise<void> {
-  await axios.delete(`/api/v1/admin/users/${userId}`)
+  await axios.delete(`/admin/users/${userId}`)
 }
 
 async function fetchUserPermissions(userId: string): Promise<string[]> {
-  const { data } = await axios.get(`/api/v1/admin/users/${userId}/permissions`)
+  const { data } = await axios.get(`/admin/users/${userId}/permissions`)
   return data.permissions
 }
 
 async function setUserPermissions(userId: string, permissions: string[]): Promise<void> {
-  await axios.post(`/api/v1/admin/users/${userId}/permissions`, { permissions })
+  await axios.post(`/admin/users/${userId}/permissions`, { permissions })
 }
 
 // Hooks

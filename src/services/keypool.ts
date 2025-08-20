@@ -70,31 +70,31 @@ interface ListAPIKeysParams {
 
 // API Functions
 async function fetchAPIKeys(params: ListAPIKeysParams = {}): Promise<APIKeysResponse> {
-  const { data } = await axios.get('/api/v1/admin/keypool/keys', { params })
+  const { data } = await axios.get('/admin/keypool/keys', { params })
   return data
 }
 
 async function fetchAPIKey(keyId: string): Promise<APIKey> {
-  const { data } = await axios.get(`/api/v1/admin/keypool/keys/${keyId}`)
+  const { data } = await axios.get(`/admin/keypool/keys/${keyId}`)
   return data
 }
 
 async function createAPIKey(keyData: CreateAPIKeyRequest): Promise<APIKey> {
-  const { data } = await axios.post('/api/v1/admin/keypool/keys', keyData)
+  const { data } = await axios.post('/admin/keypool/keys', keyData)
   return data
 }
 
 async function updateAPIKey(keyId: string, updates: UpdateAPIKeyRequest): Promise<APIKey> {
-  const { data } = await axios.patch(`/api/v1/admin/keypool/keys/${keyId}`, updates)
+  const { data } = await axios.patch(`/admin/keypool/keys/${keyId}`, updates)
   return data
 }
 
 async function deleteAPIKey(keyId: string): Promise<void> {
-  await axios.delete(`/api/v1/admin/keypool/keys/${keyId}`)
+  await axios.delete(`/admin/keypool/keys/${keyId}`)
 }
 
 async function resetQuotas(keyId: string): Promise<APIKey> {
-  const { data } = await axios.post(`/api/v1/admin/keypool/keys/${keyId}/reset-quotas`)
+  const { data } = await axios.post(`/admin/keypool/keys/${keyId}/reset-quotas`)
   return data
 }
 

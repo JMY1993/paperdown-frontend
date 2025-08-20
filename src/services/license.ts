@@ -90,55 +90,55 @@ export interface ListActivationCodesResponse {
 
 // API Functions
 async function createActivationCode(data: CreateActivationCodeRequest): Promise<ActivationCode> {
-  const { data: response } = await axios.post('/api/v1/admin/license/activation-codes', data)
+  const { data: response } = await axios.post('/admin/license/activation-codes', data)
   return response
 }
 
 async function listActivationCodes(page: number, limit: number): Promise<ListActivationCodesResponse> {
-  const { data } = await axios.get('/api/v1/admin/license/activation-codes', {
+  const { data } = await axios.get('/admin/license/activation-codes', {
     params: { page, limit }
   })
   return data
 }
 
 async function getActivationCode(code: string): Promise<ActivationCode> {
-  const { data } = await axios.get(`/api/v1/admin/license/activation-codes/${code}`)
+  const { data } = await axios.get(`/admin/license/activation-codes/${code}`)
   return data
 }
 
 async function updateActivationCode(code: string, data: UpdateActivationCodeRequest): Promise<ActivationCode> {
-  const { data: response } = await axios.patch(`/api/v1/admin/license/activation-codes/${code}`, data)
+  const { data: response } = await axios.patch(`/admin/license/activation-codes/${code}`, data)
   return response
 }
 
 async function deleteActivationCode(code: string): Promise<void> {
-  await axios.delete(`/api/v1/admin/license/activation-codes/${code}`)
+  await axios.delete(`/admin/license/activation-codes/${code}`)
 }
 
 async function activateService(code: string): Promise<License> {
-  const { data } = await axios.post('/api/v1/license/activate', {}, {
+  const { data } = await axios.post('/license/activate', {}, {
     params: { code }
   })
   return data
 }
 
 async function createAndActivateUser(data: CreateAndActivateUserRequest): Promise<CreateAndActivateUserResponse> {
-  const { data: response } = await axios.post('/api/v1/license/create-and-activate', data)
+  const { data: response } = await axios.post('/license/create-and-activate', data)
   return response
 }
 
 async function getUserLicenses(): Promise<License[]> {
-  const { data } = await axios.get('/api/v1/license/licenses')
+  const { data } = await axios.get('/license/licenses')
   return data
 }
 
 async function getUserLicenseByService(serviceName: string): Promise<License> {
-  const { data } = await axios.get(`/api/v1/license/licenses/${serviceName}`)
+  const { data } = await axios.get(`/license/licenses/${serviceName}`)
   return data
 }
 
 async function validateUserLicense(data: ValidateUserLicenseRequest): Promise<ValidateUserLicenseResponse> {
-  const { data: response } = await axios.post('/api/v1/license/validate', data)
+  const { data: response } = await axios.post('/license/validate', data)
   return response
 }
 
