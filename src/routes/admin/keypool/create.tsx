@@ -54,10 +54,19 @@ function CreateAPIKeyPage() {
     const tags = tagsInput.split(',').map(tag => tag.trim()).filter(Boolean)
     
     try {
-      await createKey.mutateAsync({
+      // Transform datetime fields to ISO strings
+      const apiData = {
         ...formData,
-        tags: tags.length > 0 ? tags : undefined
-      })
+        tags: tags.length > 0 ? tags : undefined,
+        quotas: {
+          quotas: formData.quotas.quotas.map((quota: any) => ({
+            ...quota,
+            expires_at: quota.expires_at ? new Date(quota.expires_at).toISOString() : undefined
+          }))
+        }
+      }
+      
+      await createKey.mutateAsync(apiData)
       
       toast({
         title: "Success",

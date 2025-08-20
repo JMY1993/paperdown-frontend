@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ForbiddenRouteImport } from './routes/forbidden'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -34,6 +35,11 @@ import { Route as AdminLicenseActivationCodesCreateRouteImport } from './routes/
 import { Route as AdminKeypoolKeyIdEditRouteImport } from './routes/admin/keypool/$keyId/edit'
 import { Route as AdminLicenseActivationCodesCodeIdEditRouteImport } from './routes/admin/license/activation-codes/$codeId/edit'
 
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForbiddenRoute = ForbiddenRouteImport.update({
   id: '/forbidden',
   path: '/forbidden',
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/forbidden': typeof ForbiddenRoute
+  '/profile': typeof ProfileRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/keypool': typeof AdminKeypoolRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/forbidden': typeof ForbiddenRoute
+  '/profile': typeof ProfileRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/keypool': typeof AdminKeypoolRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/forbidden': typeof ForbiddenRoute
+  '/profile': typeof ProfileRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/keypool': typeof AdminKeypoolRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/forbidden'
+    | '/profile'
     | '/admin/announcements'
     | '/admin/keypool'
     | '/admin/users'
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/forbidden'
+    | '/profile'
     | '/admin/announcements'
     | '/admin/keypool'
     | '/admin/users'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/forbidden'
+    | '/profile'
     | '/admin/announcements'
     | '/admin/keypool'
     | '/admin/users'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   ForbiddenRoute: typeof ForbiddenRoute
+  ProfileRoute: typeof ProfileRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
@@ -336,6 +349,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/forbidden': {
       id: '/forbidden'
       path: '/forbidden'
@@ -552,6 +572,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   DashboardRoute: DashboardRoute,
   ForbiddenRoute: ForbiddenRoute,
+  ProfileRoute: ProfileRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,

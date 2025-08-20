@@ -34,23 +34,6 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: frontendPort,
-      proxy: {
-        '/api': {
-          target: apiUrl,
-          changeOrigin: true,
-          secure: false,
-        },
-        '/swagger': {
-          target: apiUrl,
-          changeOrigin: true,
-          secure: false,
-        },
-        '/health': {
-          target: apiUrl,
-          changeOrigin: true,
-          secure: false,
-        },
-      },
     },
   }
 })

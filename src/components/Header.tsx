@@ -19,9 +19,14 @@ export default function Header() {
         </div>
 
         {isAuthenticated && (
-          <div className="px-2 font-bold whitespace-nowrap">
-            <Link to="/dashboard">Dashboard</Link>
-          </div>
+          <>
+            <div className="px-2 font-bold whitespace-nowrap">
+              <Link to="/dashboard">Dashboard</Link>
+            </div>
+            <div className="px-2 font-bold whitespace-nowrap">
+              <Link to="/profile">Profile</Link>
+            </div>
+          </>
         )}
       </nav>
 

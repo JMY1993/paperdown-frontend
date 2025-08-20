@@ -20,8 +20,8 @@ function CreateActivationCodePage() {
       // Transform the data to match the API requirements
       const apiData = {
         ...data,
-        code_ttl: data.code_ttl || undefined,
-        service_start_time: data.service_start_time || undefined,
+        code_ttl: data.code_ttl ? new Date(data.code_ttl).toISOString() : undefined,
+        service_start_time: data.service_start_time ? new Date(data.service_start_time).toISOString() : undefined,
         user_uuid: data.user_uuid || undefined,
       }
       

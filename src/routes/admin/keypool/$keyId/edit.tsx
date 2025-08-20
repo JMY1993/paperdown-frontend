@@ -47,7 +47,12 @@ function EditAPIKeyPage() {
         priority: apiKey.priority,
         cost_per_use: apiKey.cost_per_use,
         status: apiKey.status,
-        quotas: apiKey.quotas
+        quotas: apiKey.quotas ? {
+          quotas: apiKey.quotas.quotas.map(quota => ({
+            ...quota,
+            expires_at: quota.expires_at ? new Date(quota.expires_at).toISOString().slice(0, 16) : undefined
+          }))
+        } : undefined
       })
       setTagsInput((apiKey.tags || []).join(', '))
     }
@@ -60,12 +65,21 @@ function EditAPIKeyPage() {
     const tags = tagsInput.split(',').map(tag => tag.trim()).filter(Boolean)
     
     try {
+      // Transform datetime fields to ISO strings
+      const apiData = {
+        ...formData,
+        tags: tags.length > 0 ? tags : undefined,
+        quotas: formData.quotas ? {
+          quotas: formData.quotas.quotas.map((quota: any) => ({
+            ...quota,
+            expires_at: quota.expires_at ? new Date(quota.expires_at).toISOString() : undefined
+          }))
+        } : undefined
+      }
+      
       await updateKey.mutateAsync({
         keyId,
-        data: {
-          ...formData,
-          tags: tags.length > 0 ? tags : undefined
-        }
+        data: apiData
       })
       
       toast({

@@ -21,7 +21,14 @@ function EditActivationCodePage() {
   
   const handleSubmit = async (formData: ActivationCodeFormValues) => {
     try {
-      await updateMutation.mutateAsync({ code: codeId, data: formData })
+      // Transform the data to match the API requirements  
+      const apiData = {
+        ...formData,
+        code_ttl: formData.code_ttl ? new Date(formData.code_ttl).toISOString() : undefined,
+        service_start_time: formData.service_start_time ? new Date(formData.service_start_time).toISOString() : undefined,
+        user_uuid: formData.user_uuid || undefined,
+      }
+      await updateMutation.mutateAsync({ code: codeId, data: apiData })
       toast({
         title: "Success",
         description: "Activation code updated successfully",
@@ -71,9 +78,9 @@ function EditActivationCodePage() {
   // Transform the data to match the form structure
   const initialData = {
     service_name: data.service_name,
-    code_ttl: data.code_ttl || undefined,
+    code_ttl: data.code_ttl ? new Date(data.code_ttl).toISOString().slice(0, 16) : undefined,
     activation_type: data.activation_type as "immediate" | "fixed",
-    service_start_time: data.service_start_time || undefined,
+    service_start_time: data.service_start_time ? new Date(data.service_start_time).toISOString().slice(0, 16) : undefined,
     service_duration: data.service_duration,
     bind_type: data.bind_type as "user" | "universal",
     stacking_type: data.stacking_type as "reject" | "extend" | "replace",

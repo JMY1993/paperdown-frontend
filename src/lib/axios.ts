@@ -2,7 +2,7 @@ import axios from 'axios'
 import { authManager } from '@/utils/auth'
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1`,
   timeout: 30000,
 })
 
