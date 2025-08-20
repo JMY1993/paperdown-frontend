@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { requireAuth } from '@/utils/routeProtection'
-import { useAuth } from '@/contexts/AuthContext'
 import { authManager } from '@/utils/auth'
 import axios from '@/lib/axios'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -49,7 +48,6 @@ function ProfilePage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { toast } = useToast()
-  const { user } = useAuth()
 
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
@@ -298,9 +296,6 @@ function ProfilePage() {
                     <p className="text-sm text-gray-500">No special permissions</p>
                   )}
                 </div>
-                <p className="text-xs text-gray-400 mt-1">
-                  Debug: isAdmin = {String(isAdmin)}, permissions = {JSON.stringify(userFromToken?.permissions)}
-                </p>
               </div>
               <div>
                 <Label className="text-sm font-medium text-gray-500">Account Status</Label>

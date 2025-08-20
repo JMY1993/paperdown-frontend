@@ -10,8 +10,7 @@ export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), '')
   
-  // Parse backend URL to get host and port
-  const apiUrl = env.VITE_API_URL || 'http://localhost:8000'
+  // Parse frontend port
   const frontendPort = parseInt(env.VITE_PORT || '3000')
   
   return {
