@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { tokenManager } from './token'
-import { authManager } from '@/utils/auth'
 
 const api = axios.create({
   baseURL: '/api/v1',

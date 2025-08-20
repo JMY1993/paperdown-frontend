@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
 import { useActivationCode, useUpdateActivationCode } from '@/services/license'
 import { requireRole } from '@/utils/routeProtection'
 import { useToast } from '@/hooks/use-toast'
@@ -72,14 +71,14 @@ function EditActivationCodePage() {
   // Transform the data to match the form structure
   const initialData = {
     service_name: data.service_name,
-    code_ttl: data.code_ttl,
+    code_ttl: data.code_ttl || undefined,
     activation_type: data.activation_type as "immediate" | "fixed",
-    service_start_time: data.service_start_time,
+    service_start_time: data.service_start_time || undefined,
     service_duration: data.service_duration,
     bind_type: data.bind_type as "user" | "universal",
     stacking_type: data.stacking_type as "reject" | "extend" | "replace",
-    user_uuid: data.user_uuid,
-    max_uses: data.max_uses,
+    user_uuid: data.user_uuid || undefined,
+    max_uses: data.max_uses || undefined,
   }
   
   return (

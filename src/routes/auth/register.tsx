@@ -45,7 +45,6 @@ function RegisterPage() {
   
   const passwordStrength = passwordRequirements.filter(req => req.met).length
   const strengthPercentage = (passwordStrength / passwordRequirements.length) * 100
-  const strengthColor = strengthPercentage < 50 ? 'bg-red-500' : strengthPercentage < 75 ? 'bg-yellow-500' : 'bg-green-500'
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

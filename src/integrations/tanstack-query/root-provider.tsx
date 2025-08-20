@@ -6,21 +6,25 @@ import { tokenManager } from '@/lib/token'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      onError: (error: any) => {
+      retry: (failureCount, error: any) => {
         if (error?.response?.status === 401) {
           authManager.clearAuth()
           tokenManager.clearToken()
           // TanStack Router's beforeLoad will handle redirect
+          return false
         }
+        return failureCount < 3
       },
     },
     mutations: {
-      onError: (error: any) => {
+      retry: (failureCount, error: any) => {
         if (error?.response?.status === 401) {
           authManager.clearAuth()
           tokenManager.clearToken()
           // TanStack Router's beforeLoad will handle redirect
+          return false
         }
+        return failureCount < 3
       },
     },
   },

@@ -14,7 +14,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 

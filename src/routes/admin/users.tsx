@@ -25,7 +25,6 @@ import {
 } from '@/components/ui/pagination'
 import { useToast } from '@/hooks/use-toast'
 import { 
-  MoreHorizontal, 
   Trash2, 
   Edit, 
   UserPlus,
@@ -33,7 +32,6 @@ import {
   AlertCircle,
   X,
   Plus,
-  Save,
   Loader2
 } from 'lucide-react'
 

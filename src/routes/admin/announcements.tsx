@@ -113,20 +113,15 @@ const deleteAnnouncement = async (id: string): Promise<void> => {
 };
 
 // 从现有公告中提取频道名称
-const getExistingChannels = (announcements: Announcement[]): string[] => {
-  return [...new Set(announcements.map(a => a.channel))];
-};
 
 function AnnouncementForm({ 
   announcement, 
   onSubmit, 
   onCancel,
-  availableChannels = []
 }: { 
   announcement?: Announcement; 
   onSubmit: (data: CreateAnnouncementData | UpdateAnnouncementData) => void;
   onCancel: () => void;
-  availableChannels?: string[];
 }) {
   const [formData, setFormData] = useState({
     channel: announcement?.channel || '',
@@ -266,8 +261,6 @@ function AnnouncementsPage() {
     queryFn: fetchAnnouncements,
   });
 
-  // 获取现有频道列表
-  const availableChannels = getExistingChannels(announcements);
 
   const createMutation = useMutation({
     mutationFn: createAnnouncement,
@@ -328,7 +321,6 @@ function AnnouncementsPage() {
             <AnnouncementForm
               onSubmit={(data) => createMutation.mutate(data as CreateAnnouncementData)}
               onCancel={() => setShowCreateDialog(false)}
-              availableChannels={availableChannels}
             />
           </DialogContent>
         </Dialog>
@@ -433,7 +425,6 @@ function AnnouncementsPage() {
                 setShowEditDialog(false);
                 setEditingAnnouncement(null);
               }}
-              availableChannels={availableChannels}
             />
           )}
         </DialogContent>

@@ -1,7 +1,7 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import { Mail, X, AlertCircle, CheckCircle } from 'lucide-react'
+import { Mail, X, AlertCircle } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 export default function EmailVerificationBanner() {

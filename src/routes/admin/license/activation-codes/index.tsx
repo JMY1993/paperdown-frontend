@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/pagination'
 import { useToast } from '@/hooks/use-toast'
 import { 
-  MoreHorizontal, 
   Trash2, 
   Edit, 
   Plus,
@@ -80,12 +79,12 @@ function ActivationCodesPage() {
             className="pl-10"
           />
         </div>
-        <Button asChild>
-          <Link to="/admin/license/activation-codes/create">
+        <Link to="/admin/license/activation-codes/create">
+          <Button>
             <Plus className="mr-2 h-4 w-4" />
             Create Activation Code
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
       
       {/* Activation Codes Cards */}
@@ -114,15 +113,14 @@ function ActivationCodesPage() {
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                    >
-                      <Link to="/admin/license/activation-codes/$codeId/edit" params={{ codeId: code.code }}>
+                    <Link to="/admin/license/activation-codes/$codeId/edit" params={{ codeId: code.code }}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                      >
                         <Edit className="h-4 w-4" />
-                      </Link>
-                    </Button>
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       size="sm"

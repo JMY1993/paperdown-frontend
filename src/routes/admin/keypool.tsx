@@ -29,7 +29,6 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
   Plus, 
-  Search, 
   MoreHorizontal, 
   Edit, 
   Trash2, 
@@ -257,7 +256,7 @@ function KeyPoolPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem asChild>
-                            <Link to={`/admin/keypool/${key.id}/edit`}>
+                            <Link to="/admin/keypool/$keyId/edit" params={{ keyId: key.id }}>
                               <Edit className="mr-2 h-4 w-4" />
                               Edit
                             </Link>
