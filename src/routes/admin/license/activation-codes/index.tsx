@@ -22,7 +22,17 @@ import {
   Plus,
   Search,
   AlertCircle,
+  Calendar,
+  Clock,
 } from 'lucide-react'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 export const Route = createFileRoute('/admin/license/activation-codes/')({
   component: ActivationCodesPage,
@@ -87,106 +97,182 @@ function ActivationCodesPage() {
         </Link>
       </div>
       
-      {/* Activation Codes Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {isLoading ? (
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-32 w-full" />
-            ))}
-          </div>
-        ) : error ? (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>Failed to load activation codes</AlertDescription>
-          </Alert>
-        ) : (
-          <>
-            {data?.activation_codes?.map((code) => (
-              <div key={code.id} className="bg-white dark:bg-gray-800 rounded-lg border p-4 space-y-3 hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <div className="font-medium text-sm break-all">{code.code}</div>
-                    <div className="text-sm text-muted-foreground">{code.service_name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      Created {new Date(code.created_at).toLocaleDateString()}
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    <Link to="/admin/license/activation-codes/$codeId/edit" params={{ codeId: code.code }}>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setDeletingCode(code.code)}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex flex-wrap gap-1">
-                    <Badge variant="secondary" className="text-xs">
-                      {code.bind_type}
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      {code.stacking_type}
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      {code.activation_type}
-                    </Badge>
+      {/* Activation Codes Table */}
+      <div className="border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Code</TableHead>
+              <TableHead>Service</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>License Period</TableHead>
+              <TableHead>Code Expiry</TableHead>
+              <TableHead>Usage</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                </TableRow>
+              ))
+            ) : error ? (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <Alert variant="destructive" className="m-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>Failed to load activation codes</AlertDescription>
+                  </Alert>
+                </TableCell>
+              </TableRow>
+            ) : data?.activation_codes?.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                  No activation codes found
+                </TableCell>
+              </TableRow>
+            ) : (
+              data?.activation_codes?.map((code) => {
+                // 计算license有效期
+                const getLicensePeriod = () => {
+                  if (code.service_duration <= 0) return 'Permanent'
+                  const days = code.service_duration
+                  if (days >= 365) {
+                    const years = Math.floor(days / 365)
+                    const remainingDays = days % 365
+                    return years > 0 && remainingDays > 0 
+                      ? `${years}y ${remainingDays}d`
+                      : `${years}y`
+                  }
+                  if (days >= 30) {
+                    const months = Math.floor(days / 30)
+                    const remainingDays = days % 30
+                    return months > 0 && remainingDays > 0
+                      ? `${months}m ${remainingDays}d`
+                      : `${months}m`
+                  }
+                  return `${days}d`
+                }
+
+                // 判断code过期状态
+                const isCodeExpired = code.code_ttl ? new Date(code.code_ttl) < new Date() : false
+                const isCodeExhausted = code.max_uses ? code.used_count >= code.max_uses : false
+
+                return (
+                  <TableRow key={code.id} className="hover:bg-muted/50">
+                    <TableCell className="font-mono text-sm">
+                      <div className="max-w-[200px] truncate" title={code.code}>
+                        {code.code}
+                      </div>
+                    </TableCell>
                     
-                    {/* Usage Status Badge */}
-                    {code.max_uses ? (
-                      code.used_count >= code.max_uses ? (
-                        <Badge variant="destructive" className="text-xs">
-                          Exhausted
-                        </Badge>
-                      ) : code.used_count > 0 ? (
-                        <Badge variant="default" className="text-xs">
-                          Partially Used
-                        </Badge>
-                      ) : (
+                    <TableCell>
+                      <Badge variant="secondary">{code.service_name}</Badge>
+                    </TableCell>
+                    
+                    <TableCell>
+                      <div className="space-y-1">
                         <Badge variant="outline" className="text-xs">
-                          Unused
+                          {code.bind_type}
                         </Badge>
-                      )
-                    ) : (
-                      code.used_count > 0 ? (
-                        <Badge variant="default" className="text-xs">
-                          Used {code.used_count}x
-                        </Badge>
+                        <div className="text-xs text-muted-foreground">
+                          {code.activation_type}
+                        </div>
+                      </div>
+                    </TableCell>
+                    
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-sm">{getLicensePeriod()}</span>
+                      </div>
+                    </TableCell>
+                    
+                    <TableCell>
+                      {code.code_ttl ? (
+                        <div className={`flex items-center gap-1 text-sm ${
+                          isCodeExpired ? 'text-red-600' : 'text-muted-foreground'
+                        }`}>
+                          <Calendar className="h-3 w-3" />
+                          <span>{new Date(code.code_ttl).toLocaleDateString()}</span>
+                        </div>
                       ) : (
-                        <Badge variant="outline" className="text-xs">
-                          Unused
-                        </Badge>
-                      )
-                    )}
-                  </div>
-                  
-                  {code.code_ttl && (
-                    <div className="text-xs text-muted-foreground">
-                      Expires: {new Date(code.code_ttl).toLocaleDateString()}
-                    </div>
-                  )}
-                  
-                  {/* Always show usage information */}
-                  <div className="text-xs text-muted-foreground">
-                    Used: {code.used_count}{code.max_uses ? ` / ${code.max_uses}` : ' (unlimited)'}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
+                        <span className="text-xs text-muted-foreground">No expiry</span>
+                      )}
+                    </TableCell>
+                    
+                    <TableCell>
+                      <div className="text-sm">
+                        <span className={code.used_count > 0 ? 'font-medium' : ''}>
+                          {code.used_count}
+                        </span>
+                        {code.max_uses ? (
+                          <span className="text-muted-foreground"> / {code.max_uses}</span>
+                        ) : (
+                          <span className="text-muted-foreground"> / ∞</span>
+                        )}
+                      </div>
+                    </TableCell>
+                    
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
+                        {isCodeExpired ? (
+                          <Badge variant="destructive" className="text-xs w-fit">
+                            Expired
+                          </Badge>
+                        ) : isCodeExhausted ? (
+                          <Badge variant="destructive" className="text-xs w-fit">
+                            Exhausted
+                          </Badge>
+                        ) : code.used_count > 0 ? (
+                          <Badge variant="default" className="text-xs w-fit">
+                            Used
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-xs w-fit">
+                            Available
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <Link to="/admin/license/activation-codes/$codeId/edit" params={{ codeId: code.code }}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                          onClick={() => setDeletingCode(code.code)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            )}
+          </TableBody>
+        </Table>
       </div>
       
       {/* Pagination */}
