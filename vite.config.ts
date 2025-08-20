@@ -22,6 +22,9 @@ export default defineConfig(({ mode }) => {
       viteReact(),
       tailwindcss(),
     ],
+    build: {
+      chunkSizeWarningLimit: 1000, // 提高到1MB警告阈值
+    },
     test: {
       globals: true,
       environment: 'jsdom',
