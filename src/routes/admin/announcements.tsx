@@ -54,8 +54,9 @@ interface UpdateAnnouncementData {
 
 // API functions
 const fetchAnnouncements = async (): Promise<Announcement[]> => {
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const token = localStorage.getItem('token');
-  const response = await fetch('/api/v1/admin/announcements', {
+  const response = await fetch(`${apiUrl}/api/v1/admin/announcements`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -68,8 +69,9 @@ const fetchAnnouncements = async (): Promise<Announcement[]> => {
 };
 
 const createAnnouncement = async (data: CreateAnnouncementData): Promise<Announcement> => {
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const token = localStorage.getItem('token');
-  const response = await fetch('/api/v1/admin/announcements', {
+  const response = await fetch(`${apiUrl}/api/v1/admin/announcements`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

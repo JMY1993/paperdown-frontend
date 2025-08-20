@@ -27,7 +27,8 @@ const fetchAdminDashboardAnnouncements = async (): Promise<Announcement[]> => {
     throw new Error('No authentication token');
   }
   
-  const response = await fetch('/api/v1/announcements/admin-dashboard', {
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const response = await fetch(`${apiUrl}/api/v1/announcements/admin-dashboard`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
