@@ -24,6 +24,8 @@ import {
   AlertCircle,
   Calendar,
   Clock,
+  Copy,
+  Check,
 } from 'lucide-react'
 import {
   Table,
@@ -43,6 +45,7 @@ function ActivationCodesPage() {
   const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [deletingCode, setDeletingCode] = useState<string | null>(null)
+  const [copiedCode, setCopiedCode] = useState<string | null>(null)
   
   const { data, isLoading, error } = useActivationCodes(page, 20)
   const deleteMutation = useDeleteActivationCode()
@@ -64,6 +67,25 @@ function ActivationCodesPage() {
       })
     } finally {
       setDeletingCode(null)
+    }
+  }
+
+  const handleCopyCode = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopiedCode(code)
+      toast({
+        title: "Copied!",
+        description: "Activation code copied to clipboard",
+      })
+      // 2秒后重置复制状态
+      setTimeout(() => setCopiedCode(null), 2000)
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Copy failed",
+        description: "Failed to copy activation code to clipboard",
+      })
     }
   }
   
@@ -171,8 +193,23 @@ function ActivationCodesPage() {
                 return (
                   <TableRow key={code.id} className="hover:bg-muted/50">
                     <TableCell className="font-mono text-sm">
-                      <div className="max-w-[200px] truncate" title={code.code}>
-                        {code.code}
+                      <div className="flex items-center gap-2 max-w-[200px]">
+                        <div className="truncate" title={code.code}>
+                          {code.code}
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 flex-shrink-0"
+                          onClick={() => handleCopyCode(code.code)}
+                          title="Copy activation code"
+                        >
+                          {copiedCode === code.code ? (
+                            <Check className="h-3 w-3 text-green-600" />
+                          ) : (
+                            <Copy className="h-3 w-3" />
+                          )}
+                        </Button>
                       </div>
                     </TableCell>
                     
