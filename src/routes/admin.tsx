@@ -7,7 +7,8 @@ import {
   Menu,
   X,
   Megaphone,
-  Key
+  Key,
+  FileText
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -26,6 +27,7 @@ function AdminLayout() {
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Key Pool', href: '/admin/keypool', icon: Key },
     { name: 'Announcements', href: '/admin/announcements', icon: Megaphone },
+    { name: 'System Logs', href: '/admin/logs', icon: FileText },
   ]
   
   return (

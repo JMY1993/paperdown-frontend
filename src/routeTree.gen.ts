@@ -25,6 +25,7 @@ import { Route as AuthVerifyEmailRouteImport } from './routes/auth/verify-email'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
+import { Route as AdminLogsRouteImport } from './routes/admin/logs'
 import { Route as AdminKeypoolRouteImport } from './routes/admin/keypool'
 import { Route as AdminAnnouncementsRouteImport } from './routes/admin/announcements'
 import { Route as LicenseLicensesIndexRouteImport } from './routes/license/licenses/index'
@@ -116,6 +117,11 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminLogsRoute = AdminLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminKeypoolRoute = AdminKeypoolRouteImport.update({
   id: '/keypool',
   path: '/keypool',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/keypool': typeof AdminKeypoolRouteWithChildren
+  '/admin/logs': typeof AdminLogsRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/keypool': typeof AdminKeypoolRouteWithChildren
+  '/admin/logs': typeof AdminLogsRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/keypool': typeof AdminKeypoolRouteWithChildren
+  '/admin/logs': typeof AdminLogsRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/admin/announcements'
     | '/admin/keypool'
+    | '/admin/logs'
     | '/admin/users'
     | '/auth/login'
     | '/auth/register'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/admin/announcements'
     | '/admin/keypool'
+    | '/admin/logs'
     | '/admin/users'
     | '/auth/login'
     | '/auth/register'
@@ -309,6 +320,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/admin/announcements'
     | '/admin/keypool'
+    | '/admin/logs'
     | '/admin/users'
     | '/auth/login'
     | '/auth/register'
@@ -461,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/logs': {
+      id: '/admin/logs'
+      path: '/logs'
+      fullPath: '/admin/logs'
+      preLoaderRoute: typeof AdminLogsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/keypool': {
       id: '/admin/keypool'
       path: '/keypool'
@@ -544,6 +563,7 @@ const AdminKeypoolRouteWithChildren = AdminKeypoolRoute._addFileChildren(
 interface AdminRouteChildren {
   AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
   AdminKeypoolRoute: typeof AdminKeypoolRouteWithChildren
+  AdminLogsRoute: typeof AdminLogsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminLicenseIndexRoute: typeof AdminLicenseIndexRoute
@@ -555,6 +575,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAnnouncementsRoute: AdminAnnouncementsRoute,
   AdminKeypoolRoute: AdminKeypoolRouteWithChildren,
+  AdminLogsRoute: AdminLogsRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminLicenseIndexRoute: AdminLicenseIndexRoute,
