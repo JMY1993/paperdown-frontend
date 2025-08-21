@@ -30,7 +30,7 @@ function LogsPage() {
     setFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key !== 'page' ? 1 : value, // Reset to first page when changing filters
+      page: key !== 'page' ? 1 : Number(value) || 1, // Reset to first page when changing filters
     }))
   }
 
